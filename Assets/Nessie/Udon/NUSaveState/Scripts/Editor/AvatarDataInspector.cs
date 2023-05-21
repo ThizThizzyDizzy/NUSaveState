@@ -48,7 +48,7 @@ namespace Nessie.Udon.SaveState.Internal
                     
                     int bitCount = propBitCount.intValue;
                     string slotsLabel = propVarSlots.displayName;
-                    string bitsLabel = $"Bits: {bitCount} / {Mathf.CeilToInt(bitCount / 256f) * 256} Bytes: {Mathf.Ceil(bitCount / 8f)} / {Mathf.CeilToInt(bitCount / 256f) * 32}";
+                    string bitsLabel = $"Bits: {bitCount} / {Mathf.CeilToInt(bitCount / (float)AvatarData.MAX_BIT_COUNT) * AvatarData.MAX_BIT_COUNT} Bytes: {Mathf.Ceil(bitCount / 8f)} / {Mathf.CeilToInt(bitCount / (float)AvatarData.MAX_BIT_COUNT) * (AvatarData.MAX_BIT_COUNT/8)}";
                     
                     //EditorGUI.LabelField(new Rect(rect) { height = EditorGUIUtility.singleLineHeight }, slotsLabel, bitsLabel);
                     

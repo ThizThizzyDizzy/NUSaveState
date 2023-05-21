@@ -12,17 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ca0128dafb65540b9a02dfd3b96f8a, type: 3}
   m_Name: Example
   m_EditorClassIdentifier: 
-  AvatarBlueprint: avtr_1a5e837d-1944-44f3-aa2c-b3854a33a8ac
+  AvatarBlueprint: avtr_199c6635-d288-423c-a6cb-3eee0e2b69ce
   EncryptionKey: 404
   ParameterWriter: {fileID: 9100000, guid: 468796a8979414641a2c2ee2d283bd12, type: 2}
   IsLegacy: 0
   ParameterName: parameter
   KeyCoordinate: {x: 0, y: 0, z: 0}
   VariableSlots:
-  - Name: Slider Value
-    TypeEnum: 7
-  - Name: Player Position
+  - Name: v0
     TypeEnum: 15
-  - Name: Player Rotation
-    TypeEnum: 19
-  BitCount: 232
+  - Name: v1
+    TypeEnum: 15
+  - Name: v2
+    TypeEnum: 15
+  - Name: v3
+    TypeEnum: 15
+  - Name: v4
+    TypeEnum: 15
+  - Name: v5
+    TypeEnum: 15
+  - Name: v6
+    TypeEnum: 15
+  - Name: v7
+    TypeEnum: 15
+  - Name: v8
+    TypeEnum: 15
+  - Name: v9
+    TypeEnum: 15
+  - Name: va
+    TypeEnum: 15
+  - Name: vb
+    TypeEnum: 15
+  - Name: vc
+    TypeEnum: 15
+  - Name: vd
+    TypeEnum: 15
+  - Name: ve
+    TypeEnum: 15
+  - Name: vf
+    TypeEnum: 15
+  BitCount: 1536

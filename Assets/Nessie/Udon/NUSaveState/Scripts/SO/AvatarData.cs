@@ -8,7 +8,9 @@ namespace Nessie.Udon.SaveState.Data
     [CreateAssetMenu(fileName = "Avatar_Data", menuName = "ScriptableObjects/Nessie/Avatar Data")]
     public class AvatarData : ScriptableObject
     {
-        public const int MAX_BIT_COUNT = 256; // Limited by avatar parameter memory.
+        public const int BITS_PER_PAGE = 16*16; // 24 bones (16 usable), 16 bits each
+        public const int MAX_PAGE_COUNT = 256;//1 byte for page index
+        public const int MAX_BIT_COUNT = BITS_PER_PAGE*MAX_PAGE_COUNT;
         public const string DEFAULT_PARAMETER_NAME = "parameter";
 
         [Tooltip("Blueprint ID of the avatar used to store this data.")]

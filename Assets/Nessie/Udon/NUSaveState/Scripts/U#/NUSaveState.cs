@@ -14,6 +14,8 @@ namespace Nessie.Udon.SaveState
     public class NUSaveState : UdonSharpBehaviour
     {
         public const string PACKAGE_VERSION = "1.4.0";
+
+        public const int BYTES_PER_PAGE = 32;//should reflect AvatarData.BITS_PER_PAGE
         
         #region Serialized Public Fields
 
@@ -94,6 +96,7 @@ namespace Nessie.Udon.SaveState
 
         private byte[][] bufferBytes;
         private int currentByteIndex;
+        private int currentPageIndex;
         
         private int totalAvatarCount;
         private int currentAvatarindex;
@@ -370,6 +373,7 @@ namespace Nessie.Udon.SaveState
         private void _ChangeAvatar()
         {
             currentByteIndex = 0;
+            currentPageIndex = -1;
 
             Debug.Log($"Switching avatar to buffer avatar: {currentAvatarindex} ({dataAvatarPedestals[currentAvatarindex].blueprintId})");
             dataAvatarPedestals[currentAvatarindex].SetAvatarUse(localPlayer);
@@ -435,8 +439,28 @@ namespace Nessie.Udon.SaveState
         public void _SetData() // Write data by doing float additions.
         {
             //Log($"Writing data for avatar {ProgressCurrentAvatar}: data byte index {dataByteIndex}");
+
+            if(currentPageIndex==-1)Debug.Log("Saving Data...");
             
             int avatarByteCount = bufferBytes[currentAvatarindex].Length;
+
+            int pageIndex = currentByteIndex / BYTES_PER_PAGE;
+            if (pageIndex != currentPageIndex)
+            {
+                //switch to this page!
+                currentPageIndex = pageIndex;
+                /*
+                Vector3 newVel = -(new Vector3(0, pageIndex, 0) + (Vector3.one / 8f)) / 256f / 32f; //I dunno what this is doing, I just copied the one from below (but it's negative)
+                localPlayer.SetVelocity(localPlayer.GetRotation() * newVel);
+                //just switching the page, so don't increase progress; just schedule next step
+                Debug.Log("Changing to page "+pageIndex);
+
+                SendCustomEventDelayedFrames(nameof(_SetData), 1);
+                return;
+                */
+                //doesn't actually need to change the page since it's not doing verification yet
+                Debug.Log("Page " + pageIndex);
+            }
 
             bool controlBit = currentByteIndex % 6 == 0; // Mod the 9th bit in order to control the animator steps.
             byte[] avatarBytes = bufferBytes[currentAvatarindex];
@@ -472,8 +496,12 @@ namespace Nessie.Udon.SaveState
             {
                 progressStatus = ProgressState.Verifying;
                 _SSProgressCallback();
-                
-                SendCustomEventDelayedFrames(nameof(_VerifyData), 10);
+
+                currentByteIndex = 0;
+                currentPageIndex = -1;
+
+                Debug.Log("Starting data verification...");
+                SendCustomEventDelayedFrames(nameof(_VerifyData), 10); // Why 10 frames?
             }
         }
 
@@ -482,27 +510,47 @@ namespace Nessie.Udon.SaveState
         /// </summary>
         public void _VerifyData()
         {
-            localPlayer.SetVelocity(Vector3.zero); // Reset velocity before finishing or changing avatar.
-
-            Debug.Log("Starting data verification...");
+            int pageIndex = currentByteIndex / BYTES_PER_PAGE;
+            if (pageIndex != currentPageIndex)
+            {
+                //switch to this page!
+                currentPageIndex = pageIndex;
+                Vector3 newVel = -(new Vector3(0, pageIndex, 0) + (Vector3.one / 8f)) / 256f / 32f;
+                localPlayer.SetVelocity(localPlayer.GetRotation() * newVel);
+                //just switching the page, wait a frame before continuing
+                Debug.Log("Verifying page " + pageIndex);
+                SendCustomEventDelayedFrames(nameof(_VerifyData), 1);
+                return;
+            }
 
             // Verify that the write was successful.
-            byte[] inputData = bufferBytes[currentAvatarindex];
-            byte[] writtenData = _GetAvatarBytes(currentAvatarindex);
+            byte[] inputData = bufferBytes[currentAvatarindex]; // contains all data
+            byte[] writtenData = _GetAvatarBytes(currentAvatarindex); // only contains current page
 
             // Check for corrupt bytes.
-            for (int i = 0; i < inputData.Length; i++)
+            for (int i = currentByteIndex; i < Mathf.Min(inputData.Length, currentByteIndex+BYTES_PER_PAGE*(pageIndex+1)); i++)//only check current page
             {
                 //Debug.Log($"Byte {i} input: {inputData[i]:X2} written: {writtenData[i]:X2}");
-
-                if (inputData[i] != writtenData[i])
+                Debug.Log($"Checking {i}: {inputData[i]:X2}=={writtenData[i-currentByteIndex]:X2}");
+                if (inputData[i] != writtenData[i - currentByteIndex])
                 {
-                    Debug.LogError($"Data verification failed at index {i}: {inputData[i]:X2} doesn't match {writtenData[i]:X2}! Write should be restarted!");
-                    failReason = $"Data verification failed at index {i}: {inputData[i]:X2} doesn't match {writtenData[i]:X2}";
+                    Debug.LogError($"Data verification failed at index {i}: {inputData[i]:X2} doesn't match {writtenData[i-currentByteIndex]:X2}! Write should be restarted!");
+                    failReason = $"Data verification failed at index {i}: {inputData[i]:X2} doesn't match {writtenData[i-currentByteIndex]:X2}";
                     _FailedData();
                     return;
                 }
             }
+
+            currentByteIndex += BYTES_PER_PAGE; // page is complete
+
+            int avatarByteCount = bufferBytes[currentAvatarindex].Length;
+            if (currentByteIndex < avatarByteCount) //next page
+            {
+                _VerifyData();//this should be fine(tm) since it'll immediately switch to the next page
+                return;
+            }
+
+            localPlayer.SetVelocity(Vector3.zero); // Reset velocity before finishing or changing avatar.
 
             // Continue if write was successful.
             int newAvatarIndex = currentAvatarindex + 1;
@@ -520,8 +568,36 @@ namespace Nessie.Udon.SaveState
 
         public void _GetData() // Read data using finger rotations.
         {
-            _GetAvatarBytes(bufferBytes[currentAvatarindex]);
-            
+            int pageIndex = currentByteIndex / BYTES_PER_PAGE;
+            if (pageIndex != currentPageIndex)
+            {
+                //switch to this page!
+                currentPageIndex = pageIndex;
+                Vector3 newVel = -(new Vector3(0, pageIndex, 0) + (Vector3.one / 8f)) / 256f / 32f;
+                localPlayer.SetVelocity(localPlayer.GetRotation() * newVel);
+                //just switching the page, wait a frame before continuing
+                // SendCustomEventDelayedFrames(nameof(_GetData), 1); // wait, would the particle collision thing call it again anyway?
+                return;
+            }
+
+            byte[] pageBytes = new byte[BYTES_PER_PAGE];
+            _GetAvatarBytes(pageBytes);
+            for(int i = currentByteIndex; i<Mathf.Min(bufferBytes.Length, currentByteIndex+BYTES_PER_PAGE); i++)
+            {
+                bufferBytes[CurrentAvatarIndex][i] = pageBytes[i - currentByteIndex]; // put the page bytes in the right place
+            }
+
+
+            currentByteIndex += BYTES_PER_PAGE; // page is complete
+
+            int avatarByteCount = bufferBytes[currentAvatarindex].Length;
+            if (currentByteIndex < avatarByteCount) //next page
+            {
+                _VerifyData();//this should be fine(tm) since it'll immediately switch to the next page
+                return;
+            }
+
+
             int newAvatarIndex = currentAvatarindex + 1;
             if (newAvatarIndex < totalAvatarCount)
             {
@@ -655,7 +731,7 @@ namespace Nessie.Udon.SaveState
         private ushort ReadParameter(int index) // 2 bytes per parameter.
         {
             Quaternion muscleTarget = localPlayer.GetBoneRotation((HumanBodyBones)dataBones[index]);
-            Quaternion muscleParent = localPlayer.GetBoneRotation((HumanBodyBones)dataBones[index + 8]);
+            Quaternion muscleParent = localPlayer.GetBoneRotation((HumanBodyBones)dataBones[index + 8]); // index out of bounds
 
             return (ushort)(Mathf.RoundToInt(InverseMuscle(muscleTarget, muscleParent) * 65536) & 0xFFFF);
         }
@@ -669,7 +745,7 @@ namespace Nessie.Udon.SaveState
             
             int byteIndex = 0;
 
-            for (int boneIndex = 0; byteIndex < avatarByteCount; boneIndex++)
+            for (int boneIndex = 0; byteIndex < Mathf.Min(avatarByteCount,BYTES_PER_PAGE); boneIndex++)
             {
                 ushort bytes = ReadParameter(boneIndex);
                 buffer[byteIndex++] = (byte)(bytes & 0xFF);
