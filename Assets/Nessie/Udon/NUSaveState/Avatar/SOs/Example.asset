@@ -19,36 +19,36 @@ MonoBehaviour:
   ParameterName: parameter
   KeyCoordinate: {x: 0, y: 0, z: 0}
   VariableSlots:
-  - Name: v0
-    TypeEnum: 15
-  - Name: v1
-    TypeEnum: 15
-  - Name: v2
-    TypeEnum: 15
-  - Name: v3
-    TypeEnum: 15
-  - Name: v4
-    TypeEnum: 15
-  - Name: v5
-    TypeEnum: 15
-  - Name: v6
-    TypeEnum: 15
-  - Name: v7
-    TypeEnum: 15
-  - Name: v8
-    TypeEnum: 15
-  - Name: v9
-    TypeEnum: 15
-  - Name: va
-    TypeEnum: 15
-  - Name: vb
-    TypeEnum: 15
-  - Name: vc
-    TypeEnum: 15
-  - Name: vd
-    TypeEnum: 15
-  - Name: ve
-    TypeEnum: 15
-  - Name: vf
-    TypeEnum: 15
-  BitCount: 1536
+  - Name: c0
+    TypeEnum: 20
+  - Name: c1
+    TypeEnum: 20
+  - Name: c2
+    TypeEnum: 20
+  - Name: c3
+    TypeEnum: 20
+  - Name: c4
+    TypeEnum: 20
+  - Name: c5
+    TypeEnum: 20
+  - Name: c6
+    TypeEnum: 20
+  - Name: c7
+    TypeEnum: 20
+  - Name: c8
+    TypeEnum: 20
+  - Name: c9
+    TypeEnum: 20
+  - Name: ca
+    TypeEnum: 20
+  - Name: cb
+    TypeEnum: 20
+  - Name: cc
+    TypeEnum: 20
+  - Name: cd
+    TypeEnum: 20
+  - Name: ce
+    TypeEnum: 20
+  - Name: cf
+    TypeEnum: 20
+  BitCount: 2048

@@ -355,10 +355,10 @@ namespace Nessie.Udon.SaveState
                 {
                     // Prepare data BlendTree animations.
                     int pageBitCount = Mathf.Min(AvatarData.BITS_PER_PAGE, (avatar.BitCount - page * AvatarData.BITS_PER_PAGE));
-                    int byteCount = Mathf.CeilToInt(pageBitCount / 8f);
+                    int byteCount = Mathf.CeilToInt(pageBitCount / 16f);
                     for (int byteIndex = 0; byteIndex < byteCount; byteIndex++)
                     {
-                        AnimationClip newClip = new AnimationClip() { name = $"SaveState-{parameterName}_{byteIndex + page * AvatarData.BITS_PER_PAGE / 8}.anim" };
+                        AnimationClip newClip = new AnimationClip() { name = $"SaveState-{parameterName}_{byteIndex + page * AvatarData.BITS_PER_PAGE / 16}.anim" };
 
                         newClip.SetCurve("", typeof(Animator), $"{MuscleNames[byteIndex % MuscleNames.Length]}{3 - byteIndex / MuscleNames.Length} Stretched", AnimationCurve.Constant(0, 0, 1));
                         newTree.AddChildNoUndo(newClip);
@@ -375,7 +375,7 @@ namespace Nessie.Udon.SaveState
                 {
                     for (int childIndex = 1; childIndex < newChildren.Length; childIndex++)
                     {
-                        string newParameter = $"{parameterName}_{childIndex - 1 + page * AvatarData.BITS_PER_PAGE / 8}";
+                        string newParameter = $"{parameterName}_{childIndex - 1 + page * AvatarData.BITS_PER_PAGE / 16}";
 
                         controller.AddParameterNoUndo(new AnimatorControllerParameter() { name = newParameter, type = ParameterType.Float });
                         newChildren[childIndex].directBlendParameter = newParameter;

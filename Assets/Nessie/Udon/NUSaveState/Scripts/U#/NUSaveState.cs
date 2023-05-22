@@ -444,26 +444,9 @@ namespace Nessie.Udon.SaveState
             
             int avatarByteCount = bufferBytes[currentAvatarindex].Length;
 
-            int pageIndex = currentByteIndex / BYTES_PER_PAGE;
-            if (pageIndex != currentPageIndex)
-            {
-                //switch to this page!
-                currentPageIndex = pageIndex;
-                /*
-                Vector3 newVel = -(new Vector3(0, pageIndex, 0) + (Vector3.one / 8f)) / 256f / 32f; //I dunno what this is doing, I just copied the one from below (but it's negative)
-                localPlayer.SetVelocity(localPlayer.GetRotation() * newVel);
-                //just switching the page, so don't increase progress; just schedule next step
-                Debug.Log("Changing to page "+pageIndex);
-
-                SendCustomEventDelayedFrames(nameof(_SetData), 1);
-                return;
-                */
-                //doesn't actually need to change the page since it's not doing verification yet
-                Debug.Log("Page " + pageIndex);
-            }
-
             bool controlBit = currentByteIndex % 6 == 0; // Mod the 9th bit in order to control the animator steps.
             byte[] avatarBytes = bufferBytes[currentAvatarindex];
+            //Debug.Log($"Saving {currentByteIndex}: {avatarBytes[currentByteIndex]:X2} {avatarBytes[currentByteIndex+1]:X2} {avatarBytes[currentByteIndex+2]:X2} ");
             int byte1 = currentByteIndex < avatarByteCount ? avatarBytes[currentByteIndex++] : 0;
             int byte2 = currentByteIndex < avatarByteCount ? avatarBytes[currentByteIndex++] : 0;
             int byte3 = currentByteIndex < avatarByteCount ? avatarBytes[currentByteIndex++] : 0;
@@ -500,7 +483,7 @@ namespace Nessie.Udon.SaveState
                 currentByteIndex = 0;
                 currentPageIndex = -1;
 
-                Debug.Log("Starting data verification...");
+                //Debug.Log("Starting data verification...");
                 SendCustomEventDelayedFrames(nameof(_VerifyData), 10); // Why 10 frames?
             }
         }
@@ -510,7 +493,7 @@ namespace Nessie.Udon.SaveState
         /// </summary>
         public void _VerifyData()
         {
-            int pageIndex = currentByteIndex / BYTES_PER_PAGE;
+            int pageIndex = currentByteIndex / (BYTES_PER_PAGE);
             if (pageIndex != currentPageIndex)
             {
                 //switch to this page!
@@ -518,7 +501,7 @@ namespace Nessie.Udon.SaveState
                 Vector3 newVel = -(new Vector3(0, pageIndex, 0) + (Vector3.one / 8f)) / 256f / 32f;
                 localPlayer.SetVelocity(localPlayer.GetRotation() * newVel);
                 //just switching the page, wait a frame before continuing
-                Debug.Log("Verifying page " + pageIndex);
+                //Debug.Log("Verifying page " + pageIndex);
                 SendCustomEventDelayedFrames(nameof(_VerifyData), 1);
                 return;
             }
@@ -528,10 +511,9 @@ namespace Nessie.Udon.SaveState
             byte[] writtenData = _GetAvatarBytes(currentAvatarindex); // only contains current page
 
             // Check for corrupt bytes.
-            for (int i = currentByteIndex; i < Mathf.Min(inputData.Length, currentByteIndex+BYTES_PER_PAGE*(pageIndex+1)); i++)//only check current page
+            for (int i = currentByteIndex; i < Mathf.Min(inputData.Length, currentByteIndex+BYTES_PER_PAGE); i++)//only check current page
             {
-                //Debug.Log($"Byte {i} input: {inputData[i]:X2} written: {writtenData[i]:X2}");
-                Debug.Log($"Checking {i}: {inputData[i]:X2}=={writtenData[i-currentByteIndex]:X2}");
+                //Debug.Log($"Byte {i} input: {inputData[i]:X2} written: {writtenData[i-currentByteIndex]:X2}");
                 if (inputData[i] != writtenData[i - currentByteIndex])
                 {
                     Debug.LogError($"Data verification failed at index {i}: {inputData[i]:X2} doesn't match {writtenData[i-currentByteIndex]:X2}! Write should be restarted!");
@@ -576,7 +558,7 @@ namespace Nessie.Udon.SaveState
                 Vector3 newVel = -(new Vector3(0, pageIndex, 0) + (Vector3.one / 8f)) / 256f / 32f;
                 localPlayer.SetVelocity(localPlayer.GetRotation() * newVel);
                 //just switching the page, wait a frame before continuing
-                // SendCustomEventDelayedFrames(nameof(_GetData), 1); // wait, would the particle collision thing call it again anyway?
+                SendCustomEventDelayedFrames(nameof(_GetData), 1); // wait, would the particle collision thing call it again anyway?  I guess not
                 return;
             }
 

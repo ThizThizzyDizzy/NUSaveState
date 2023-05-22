@@ -11,7 +11,10 @@ public class NUSaveState_Example_Sharp : UdonSharpBehaviour
 
     // Saved/Loaded variables.
     public TMPro.TextMeshPro text;
-    public Vector3 v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, va, vb, vc, vd, ve, vf;
+    public Color c0, c1, c2, c3,
+                 c4, c5, c6, c7,
+                 c8, c9, ca, cb,
+                 cc, cd, ce, cf;
 
     public void _Save()
     {
@@ -24,42 +27,44 @@ public class NUSaveState_Example_Sharp : UdonSharpBehaviour
     }
     public void refresh()
     {
-        text.text = v0.ToString()
-            + "\n" + v1.ToString()
-            + "\n" + v2.ToString()
-            + "\n" + v3.ToString()
-            + "\n" + v4.ToString()
-            + "\n" + v5.ToString()
-            + "\n" + v6.ToString()
-            + "\n" + v7.ToString()
-            + "\n" + v8.ToString()
-            + "\n" + v9.ToString()
-            + "\n" + va.ToString()
-            + "\n" + vb.ToString()
-            + "\n" + vc.ToString()
-            + "\n" + vd.ToString()
-            + "\n" + ve.ToString()
-            + "\n" + vf.ToString();
+        text.text = col(c0) + col(c1) + col(c2) + col(c3) + "\n"
+            + col(c4) + col(c5) + col(c6) + col(c7) + "\n"
+            + col(c8) + col(c9) + col(ca) + col(cb) + "\n"
+            + col(cc) + col(cd) + col(ce) + col(cf);
+    }
+
+    private string col(Color c)
+    {
+        return "<color=" + ToHtmlStringRGB(c) + ">█</color>";
+    }
+
+    public static string ToHtmlStringRGB(Color color) //thanks ChatGPT :3
+    {
+        int r = Mathf.RoundToInt(color.r * 255f);
+        int g = Mathf.RoundToInt(color.g * 255f);
+        int b = Mathf.RoundToInt(color.b * 255f);
+
+        return $"#{r:X2}{g:X2}{b:X2}";
     }
 
     public void _Randomize()
     {
-        v0 = Random.insideUnitSphere;
-        v1 = Random.insideUnitSphere;
-        v2 = Random.insideUnitSphere;
-        v3 = Random.insideUnitSphere;
-        v4 = Random.insideUnitSphere;
-        v5 = Random.insideUnitSphere;
-        v6 = Random.insideUnitSphere;
-        v7 = Random.insideUnitSphere;
-        v8 = Random.insideUnitSphere;
-        v9 = Random.insideUnitSphere;
-        va = Random.insideUnitSphere;
-        vb = Random.insideUnitSphere;
-        vc = Random.insideUnitSphere;
-        vd = Random.insideUnitSphere;
-        ve = Random.insideUnitSphere;
-        vf = Random.insideUnitSphere;
+        c0 = Random.ColorHSV();
+        c1 = Random.ColorHSV();
+        c2 = Random.ColorHSV();
+        c3 = Random.ColorHSV();
+        c4 = Random.ColorHSV();
+        c5 = Random.ColorHSV();
+        c6 = Random.ColorHSV();
+        c7 = Random.ColorHSV();
+        c8 = Random.ColorHSV();
+        c9 = Random.ColorHSV();
+        ca = Random.ColorHSV();
+        cb = Random.ColorHSV();
+        cc = Random.ColorHSV();
+        cd = Random.ColorHSV();
+        ce = Random.ColorHSV();
+        cf = Random.ColorHSV();
         refresh();
     }
 

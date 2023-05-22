@@ -164,19 +164,19 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v0
+      Data: c0
     - Name: $v
       Entry: 7
       Data: 9|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v0
+      Data: c0
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 10|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+      Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 8
       Data: 
@@ -218,13 +218,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v1
+      Data: c1
     - Name: $v
       Entry: 7
       Data: 12|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v1
+      Data: c1
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -266,13 +266,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v2
+      Data: c2
     - Name: $v
       Entry: 7
       Data: 14|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v2
+      Data: c2
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -314,13 +314,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v3
+      Data: c3
     - Name: $v
       Entry: 7
       Data: 16|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v3
+      Data: c3
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -362,13 +362,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v4
+      Data: c4
     - Name: $v
       Entry: 7
       Data: 18|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v4
+      Data: c4
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -410,13 +410,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v5
+      Data: c5
     - Name: $v
       Entry: 7
       Data: 20|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v5
+      Data: c5
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -458,13 +458,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v6
+      Data: c6
     - Name: $v
       Entry: 7
       Data: 22|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v6
+      Data: c6
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -506,13 +506,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v7
+      Data: c7
     - Name: $v
       Entry: 7
       Data: 24|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v7
+      Data: c7
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -554,13 +554,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v8
+      Data: c8
     - Name: $v
       Entry: 7
       Data: 26|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v8
+      Data: c8
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -602,13 +602,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: v9
+      Data: c9
     - Name: $v
       Entry: 7
       Data: 28|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: v9
+      Data: c9
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -650,13 +650,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: va
+      Data: ca
     - Name: $v
       Entry: 7
       Data: 30|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: va
+      Data: ca
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -698,13 +698,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: vb
+      Data: cb
     - Name: $v
       Entry: 7
       Data: 32|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: vb
+      Data: cb
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -746,13 +746,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: vc
+      Data: cc
     - Name: $v
       Entry: 7
       Data: 34|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: vc
+      Data: cc
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -794,13 +794,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: vd
+      Data: cd
     - Name: $v
       Entry: 7
       Data: 36|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: vd
+      Data: cd
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -842,13 +842,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: ve
+      Data: ce
     - Name: $v
       Entry: 7
       Data: 38|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: ve
+      Data: ce
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
@@ -890,13 +890,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: vf
+      Data: cf
     - Name: $v
       Entry: 7
       Data: 40|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: vf
+      Data: cf
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 10
