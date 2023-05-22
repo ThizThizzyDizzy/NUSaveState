@@ -446,9 +446,11 @@ namespace Nessie.Udon.SaveState
 
             bool controlBit = currentByteIndex % 6 == 0; // Mod the 9th bit in order to control the animator steps.
             byte[] avatarBytes = bufferBytes[currentAvatarindex];
-            //Debug.Log($"Saving {currentByteIndex}: {avatarBytes[currentByteIndex]:X2} {avatarBytes[currentByteIndex+1]:X2} {avatarBytes[currentByteIndex+2]:X2} ");
+            //if (currentByteIndex < avatarByteCount) Debug.Log($"Saving {currentByteIndex}: {avatarBytes[currentByteIndex]:X2}");
             int byte1 = currentByteIndex < avatarByteCount ? avatarBytes[currentByteIndex++] : 0;
+            //if (currentByteIndex < avatarByteCount) Debug.Log($"Saving {currentByteIndex}: {avatarBytes[currentByteIndex]:X2}");
             int byte2 = currentByteIndex < avatarByteCount ? avatarBytes[currentByteIndex++] : 0;
+            //if (currentByteIndex < avatarByteCount) Debug.Log($"Saving {currentByteIndex}: {avatarBytes[currentByteIndex]:X2}");
             int byte3 = currentByteIndex < avatarByteCount ? avatarBytes[currentByteIndex++] : 0;
             byte1 |= controlBit ? 1 << 8 : 0;
 
@@ -564,8 +566,9 @@ namespace Nessie.Udon.SaveState
 
             byte[] pageBytes = new byte[BYTES_PER_PAGE];
             _GetAvatarBytes(pageBytes);
-            for(int i = currentByteIndex; i<Mathf.Min(bufferBytes.Length, currentByteIndex+BYTES_PER_PAGE); i++)
+            for(int i = currentByteIndex; i<Mathf.Min(bufferBytes[currentAvatarindex].Length, currentByteIndex+BYTES_PER_PAGE); i++)
             {
+                //Debug.Log($"Byte {i} read: {pageBytes[i-currentByteIndex]:X2}");
                 bufferBytes[CurrentAvatarIndex][i] = pageBytes[i - currentByteIndex]; // put the page bytes in the right place
             }
 
@@ -575,7 +578,7 @@ namespace Nessie.Udon.SaveState
             int avatarByteCount = bufferBytes[currentAvatarindex].Length;
             if (currentByteIndex < avatarByteCount) //next page
             {
-                _VerifyData();//this should be fine(tm) since it'll immediately switch to the next page
+                _GetData();//this should be fine(tm) since it'll immediately switch to the next page
                 return;
             }
 
